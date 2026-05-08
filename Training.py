@@ -362,7 +362,7 @@ def train(train_loader, model, criterion1,  optimizer, device, epoch):
         loss.backward()
 
         optimizer.step()
-    with open("../training_loss/"+opt.model+" train_loss.txt", 'w') as train_los:
+    with open("./training_loss/"+opt.model+"_train_loss.txt", 'w') as train_los:
         train_los.write(str(train_loss))
 
     return losses.avg,MAE.avg

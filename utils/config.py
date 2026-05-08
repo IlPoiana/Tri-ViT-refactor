@@ -3,13 +3,13 @@ import argparse
 parser = argparse.ArgumentParser(description='TSAN-Brain age estimation')
 # =========== save path ================ #
 parser.add_argument('--model_name'     ,default='best_model.pth.tar'    ,type=str, help="Checkpoint file name")
-parser.add_argument('--output_dir'     ,default='../model/'              ,type=str, help="Output dictionary, whici will contains training log and model checkpoint")
-parser.add_argument('--train_folder'   ,default='../data/data_male_train'         ,type=str, help="Train set data path ")
-parser.add_argument('--valid_folder'   ,default='../data/data_male_valid'         ,type=str, help="Validation set data path ")
-parser.add_argument('--test_folder'    ,default='../data/data_male_test'          ,type=str, help="Test set data path ")
-parser.add_argument('--mask_folder'    ,default='../data/ASD'          ,type=str, help="Mask set data path ")
+parser.add_argument('--output_dir'     ,default='./model/'              ,type=str, help="Output dictionary, whici will contains training log and model checkpoint")
+parser.add_argument('--train_folder'   ,default='./data/data_male_train'         ,type=str, help="Train set data path ")
+parser.add_argument('--valid_folder'   ,default='./data/data_male_valid'         ,type=str, help="Validation set data path ")
+parser.add_argument('--test_folder'    ,default='./data/data_male_test'          ,type=str, help="Test set data path ")
+parser.add_argument('--mask_folder'    ,default='./data/ASD'          ,type=str, help="Mask set data path ")
 
-parser.add_argument('--excel_path'     ,default='../data/Dataset_ASD.xls',type=str, help="Excel file path ")
+parser.add_argument('--excel_path'     ,default='./data/Dataset_ASD.xls',type=str, help="Excel file path ")
 parser.add_argument('--first_stage_net',default='./model/best.pth.tar'  ,type=str, help="When training the second stage network, appoint the trained first stage network checkpoint file path is needed ")
 parser.add_argument('--npz_name'       ,default='test.npz'              ,type=str, help="After inference the trained model in test set, a npz file will be saved in assigned path. So the npz name need to be appointed. ")
 parser.add_argument('--plot_name'      ,default='test.png'              ,type=str, help="After inference the trained model in test set, a scatter plot will be saved in assigned path. So the plot name need to be appointed. ")
@@ -18,7 +18,8 @@ parser.add_argument('--plot_name'      ,default='test.png'              ,type=st
 parser.add_argument('--model'       ,default='Multi_VIT',type=str,   help="Deep learning model to do brain age estimation")
 parser.add_argument('--num_workers' ,default=0           ,type=int,   help="The number of worker for dataloader")
 parser.add_argument('--batch_size'  ,default=1           ,type=int,   help="Batch size during training process")
-parser.add_argument('--epochs'      ,default=100         ,type=int,   help="Total training epochs")
+# parser.add_argument('--epochs'      ,default=100         ,type=int,   help="Total training epochs") # TO UNCOMMENT
+parser.add_argument('--epochs'      ,default=5         ,type=int,   help="Total training epochs") # TO UNCOMMENT
 parser.add_argument('--lr'          ,default=1e-3        ,type=float, help="Initial learning rate")
 parser.add_argument('--print_freq'  ,default=5           ,type=int,   help="Training log print interval")
 parser.add_argument('--weight_decay',default=5e-4        ,type=float, help="L2 weight decay ")

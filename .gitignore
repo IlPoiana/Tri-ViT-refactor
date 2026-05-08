@@ -1,8 +1,19 @@
+# Directories
 data/*
 IXI/*
 
 preprocessing/flirtsch
+preprocessing/logs
 
 FreeSurfer/data/*
 FreeSurfer/license.txt
+
+training_loss/
+model/
+# Files extensions
+*-dev.sh
 *.sif
+*.xls
+
+# Single files
+run_setup.sh
