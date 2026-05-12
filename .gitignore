@@ -16,4 +16,4 @@ model/
 *.xls
 
 # Single files
-run_setup.sh
+# run_setup.sh

@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --gres=gpu:0
 #SBATCH --partition=edu-long
-#SBATCH --array=0-9 
+#SBATCH --array=0-9
 
 # Usage: sbatch sbatch_preprocessing.sh /path/to/IXI_dataset [total_files_per_job]
 
