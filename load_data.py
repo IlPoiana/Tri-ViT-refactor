@@ -5,6 +5,11 @@ import numpy as np
 import pandas as pd
 import torch.nn.functional as F
 
+from enum import Enum
+
+class DatasetName(Enum):
+    IXI = 0
+    #Add here future dataset support if needed
 
 def nii_loader(path, dtype=np.float32, mmap_mode='r'):
     """
@@ -69,7 +74,7 @@ class IMG_Folder(torch.utils.data.Dataset):
     Dataset class for loading brain images with memory optimizations
     """
 
-    def __init__(self, excel_path, data_path, loader=nii_loader, transforms=None, preload=False):
+    def __init__(self, excel_path, data_path, loader=nii_loader, transforms=None, preload=False, dataset_name=DatasetName.IXI):
         """
         Args:
             excel_path: Path to Excel file with metadata
@@ -84,13 +89,19 @@ class IMG_Folder(torch.utils.data.Dataset):
         self.loader = loader
         self.transform = transforms
         self.preload = preload
+        self.dataset_name = dataset_name
+
 
         # Create a mapping from subject ID to metadata for faster lookup
         self.metadata = {}
         for f in self.table_refer:
             sid = str(f[0])
-            slabel = int(f[1])
-            smale = f[2]
+            if(dataset_name == DatasetName.IXI):
+                date_availability = int(f[9])
+                if date_availability != 1:
+                    continue  # Skip this sample
+                slabel = np.round(f[11])
+                smale = f[2]
             self.metadata[sid] = (slabel, smale)
 
         # Optionally preload all data into memory

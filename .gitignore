@@ -14,6 +14,7 @@ model/
 *-dev.sh
 *.sif
 *.xls
+*.log
 
 # Single files
 # run_setup.sh

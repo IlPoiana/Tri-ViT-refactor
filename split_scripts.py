@@ -53,8 +53,8 @@ def split_dataset(
     n_val = int(n_total * val_ratio)
 
     train_files = files[:n_train]
-    val_files = files[n_train:n_train + n_val]
-    test_files = files[n_train + n_val:]
+    val_files = files[n_train:(n_train + n_val)]
+    test_files = files[(n_train + n_val):]
 
     # Create output directories
     train_dir = output_path / "IXI_train"

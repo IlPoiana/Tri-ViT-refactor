@@ -19,7 +19,7 @@ parser.add_argument('--model'       ,default='Multi_VIT',type=str,   help="Deep 
 parser.add_argument('--num_workers' ,default=0           ,type=int,   help="The number of worker for dataloader")
 parser.add_argument('--batch_size'  ,default=1           ,type=int,   help="Batch size during training process")
 # parser.add_argument('--epochs'      ,default=100         ,type=int,   help="Total training epochs") # TO UNCOMMENT
-parser.add_argument('--epochs'      ,default=5         ,type=int,   help="Total training epochs") # TO UNCOMMENT
+parser.add_argument('--epochs'      ,default=1           ,type=int,   help="Total training epochs") # TO UNCOMMENT
 parser.add_argument('--lr'          ,default=1e-3        ,type=float, help="Initial learning rate")
 parser.add_argument('--print_freq'  ,default=5           ,type=int,   help="Training log print interval")
 parser.add_argument('--weight_decay',default=5e-4        ,type=float, help="L2 weight decay ")

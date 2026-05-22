@@ -3,21 +3,21 @@ import torch.nn as nn
 import os, torch
 from utils.config import opt
 from load_data import IMG_Folder, nii_loader
-from Models.ScaleDense import ScaleDense
-from Models.CNN import CNNModel
-from Models.ResNet import ResNet
-from Models.VGG import VGG
 from Models.GlobalLocalTransformer import GlobalLocalBrainAge
 from Models.vit import VisionTransformer
 from Models.MultiViewViT import MultiViewViT
-from Models.MultiViewResNet import MultiViewResNet
-from Models.MultiViewCNN import MultiViewCNN
-from Models.MultiViewVGG import MultiViewVGG
 from nilearn import datasets
 import nibabel as nib
 from scipy.ndimage import zoom
 import pandas as pd
 
+# from Models.ScaleDense import ScaleDense
+# from Models.CNN import CNNModel
+# from Models.ResNet import ResNet
+# from Models.VGG import VGG
+# from Models.MultiViewResNet import MultiViewResNet
+# from Models.MultiViewCNN import MultiViewCNN
+# from Models.MultiViewVGG import MultiViewVGG
 
 def main():
     # ======== define data loader and CUDA device ======== #
@@ -25,21 +25,22 @@ def main():
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     # ========  build and set model  ======== #
-    if opt.model == 'ScaleDense':
-        model = ScaleDense.ScaleDense(8, 5, opt.use_gender)
-    elif opt.model == 'CNN':
-        model = CNN.CNNModel()
-    elif opt.model == 'resnet':
-        model = ResNet.resnet50()
-    elif opt.model == 'VGG':
-        model = VGG.vgg()
-    elif opt.model == 'Transformer':
-        model = GlobalLocalTransformer.GlobalLocalBrainAge(1,
-                                                           patch_size=64,
-                                                           step=32,
-                                                           nblock=6,
-                                                           backbone='vgg16')
-    elif opt.model == 'VIT':
+    # if opt.model == 'ScaleDense':
+    #     model = ScaleDense.ScaleDense(8, 5, opt.use_gender)
+    # elif opt.model == 'CNN':
+    #     model = CNN.CNNModel()
+    # elif opt.model == 'resnet':
+    #     model = ResNet.resnet50()
+    # elif opt.model == 'VGG':
+    #     model = VGG.vgg()
+    # elif opt.model == 'Transformer':
+    #     model = GlobalLocalTransformer.GlobalLocalBrainAge(1,
+    #                                                        patch_size=64,
+    #                                                        step=32,
+    #                                                        nblock=6,
+    #                                                        backbone='vgg16')
+    # elif opt.model == 'VIT': original version
+    if opt.model == 'VIT':
         model = VisionTransformer(num_layers=2)
     elif opt.model == 'Multi_VIT':
         model = MultiViewViT(
@@ -50,16 +51,16 @@ def main():
                       'dropout_rate': 0.1, 'attn_dropout_rate': 0.0},
             mlp_dims=[3, 128, 256, 512, 1024, 512, 256, 128, 1]
         )
-    elif opt.model == 'Multi_ResNet':
-        model = MultiViewResNet(
-            mlp_dims=[1536, 512, 256, 1]
-        )
-    elif opt.model == 'Multi_CNN':
-        model = MultiViewCNN(
-            mlp_dims=[768, 512, 256, 1]
-        )
-    elif opt.model == 'Multi-VGG':
-        model = MultiViewVGG(mlp_dims=[12288, 4096, 1024, 256, 1])
+    # elif opt.model == 'Multi_ResNet':
+    #     model = MultiViewResNet(
+    #         mlp_dims=[1536, 512, 256, 1]
+    #     )
+    # elif opt.model == 'Multi_CNN':
+    #     model = MultiViewCNN(
+    #         mlp_dims=[768, 512, 256, 1]
+    #     )
+    # elif opt.model == 'Multi-VGG':
+    #     model = MultiViewVGG(mlp_dims=[12288, 4096, 1024, 256, 1])
     else:
         print('Wrong model choose')
 
@@ -182,13 +183,14 @@ def perform_region_occlusion_analysis(test_loader, model, device, atlas_data, re
             input_img = input_img.to(device).type(torch.FloatTensor)
 
             # Handle gender information if needed by model
-            if opt.model == 'ScaleDense':
-                male_onehot = torch.unsqueeze(male, 1)
-                male_onehot = torch.zeros(male_onehot.shape[0], 2).scatter_(1, male_onehot, 1)
-                male_onehot = male_onehot.type(torch.FloatTensor).to(device)
-                original_output = model(input_img, male_onehot)
-            else:
-                original_output = model(input_img)
+            # if opt.model == 'ScaleDense':
+            #     male_onehot = torch.unsqueeze(male, 1)
+            #     male_onehot = torch.zeros(male_onehot.shape[0], 2).scatter_(1, male_onehot, 1)
+            #     male_onehot = male_onehot.type(torch.FloatTensor).to(device)
+            #     original_output = model(input_img, male_onehot)
+            # else:
+            #     original_output = model(input_img)
+            original_output = model(input_img)            
 
             original_output = original_output.cpu().numpy()
 
@@ -228,10 +230,11 @@ def perform_region_occlusion_analysis(test_loader, model, device, atlas_data, re
                 masked_input = torch.from_numpy(cpu_input).to(device)
 
                 # Get prediction for masked input
-                if opt.model == 'ScaleDense':
-                    masked_output = model(masked_input, male_onehot)
-                else:
-                    masked_output = model(masked_input)
+                # if opt.model == 'ScaleDense':
+                #     masked_output = model(masked_input, male_onehot)
+                # else:
+                #     masked_output = model(masked_input)
+                masked_output = model(masked_input)
 
                 masked_output = masked_output.cpu().numpy()
 

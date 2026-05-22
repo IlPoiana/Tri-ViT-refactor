@@ -160,7 +160,7 @@ class Encoder(nn.Module):
                 out, attn_weights = layer(out, return_attention_weights=True)
                 attention_weights.append(attn_weights)
             else:
-                out = layer(out)
+                out = layer(out, return_attention_weights=False)
 
         if return_attention_weights:
             return out, attention_weights
@@ -220,7 +220,7 @@ class VisionTransformer(nn.Module):
         if return_attention_weights:
             feat, attention_weights = self.transformer(emb, return_attention_weights=True)
         else:
-            feat = self.transformer(emb)
+            feat = self.transformer(emb, return_attention_weights=False)
 
         # classifier
         # 想用最后一层的话，就把下面这行灰掉。

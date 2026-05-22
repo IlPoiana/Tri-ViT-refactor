@@ -38,13 +38,13 @@ class MultiViewViT(nn.Module):
         x2=x.permute(0, 2, 1, 3)
         x3=x
         if return_attention_weights:
-            out1, attn1 = self.vit_1(x1, return_attention_weights=True)
-            out2, attn2 = self.vit_2(x2, return_attention_weights=True)
-            out3, attn3 = self.vit_3(x3, return_attention_weights=True)
+            out1, attn1 = self.vit_1(x1)
+            out2, attn2 = self.vit_2(x2)
+            out3, attn3 = self.vit_3(x3)
         else:
-            out1 = self.vit_1(x1)
-            out2 = self.vit_2(x2)
-            out3 = self.vit_3(x3)
+            out1 = self.vit_1(x1, return_attention_weights=False)
+            out2 = self.vit_2(x2, return_attention_weights=False)
+            out3 = self.vit_3(x3, return_attention_weights=False)
 
         # Concatenate the outputs
         combined_out = torch.cat([out1, out2, out3], dim=1)

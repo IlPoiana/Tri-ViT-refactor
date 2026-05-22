@@ -189,24 +189,25 @@ def test(valid_loader, model, criterion, device
     # ======= start test programmer ============= #
     with torch.no_grad():
 
-        for _, (input, ids ,target,male) in enumerate(valid_loader):
+        for _, (input, ids ,target, male) in enumerate(valid_loader):
             input = input.to(device).type(torch.FloatTensor)
             
-            # ======= convert male lable to one hot type ======= #
-            male = torch.unsqueeze(male, 1)
-            male = male.long()
-            male = torch.zeros(male.shape[0], 2).scatter_(1, male, 1)
-            male = male.type(torch.FloatTensor).to(device)
+            # ======= convert male label to one hot type ======= #
+            # male = torch.unsqueeze(male, 1)
+            # male = male.long()
+            # male = torch.zeros(male.shape[0], 2).scatter_(1, male, 1)
+            # male = male.type(torch.FloatTensor).to(device)
 
             target = torch.from_numpy(np.expand_dims(target,axis=1))
             target = target.type(torch.FloatTensor).to(device)
 
             # ======= compute output and loss ======= #
-            if opt.model == 'ScaleDense' :
-                output = model(input,male)
+            # if opt.model == 'ScaleDense' :
+            #     output = model(input,male)
 
-            else:
-                output = model(input)
+            # else:
+            #     output = model(input)
+            output = model(input, return_attention_weights=False)
                 #output, (attn1, attn2, attn3) = model(input, return_attention_weights=True)
             out.append(output.cpu().numpy())
             targ.append(target.cpu().numpy())
@@ -266,9 +267,9 @@ def test(valid_loader, model, criterion, device
         #Attn2 = torch.mean(torch.stack(Attn2), dim=0)
         #Attn3 = torch.mean(torch.stack(Attn3), dim=0)
 
-        original_data = nii_loader("../data/70s/sub-1004-nonlin_brain.nii.gz")
+        # original_data = nii_loader("../data/70s/sub-1004-nonlin_brain.nii.gz")
         #修改attention map方向时，修改下面的代码
-        original_data = original_data[45, :, :]
+        # original_data = original_data[45, :, :]
 
 
         # attn_map = visulizaton_VIT(Attn1, original_data)
@@ -293,11 +294,11 @@ def test(valid_loader, model, criterion, device
             'TEST  : [steps {0}], Loss {loss.avg:.4f},  MAE:  {MAE.avg:.4f}, R²: {r2:.4f} \n'.format(
             len(valid_loader), loss=losses, MAE=MAE, r2=r2))
 
-        print('STD_err = ', np.std(errors))  
-        print(' CC:    ',np.corrcoef(target_numpy,predicted_numpy))
-        print('PAD spear man cc',spearmanr(errors,target_numpy,axis=1))
-        print('spear man cc',spearmanr(predicted_numpy,target_numpy,axis=1))
-        print('mean pad:',np.mean(errors))
+        print('STD_err =        ', np.std(errors))  
+        print('CC :             ',np.corrcoef(target_numpy,predicted_numpy))
+        print('PAD spear man cc ',spearmanr(errors,target_numpy,axis=1))
+        print('spear man cc     ',spearmanr(predicted_numpy,target_numpy,axis=1))
+        print('mean pad :       ',np.mean(errors))
 
         print('\n =================================================================')
 

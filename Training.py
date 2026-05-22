@@ -325,12 +325,12 @@ def train(train_loader, model, criterion1,  optimizer, device, epoch):
         # =========== compute output and loss =========== #
         model.train()
         model.zero_grad()
-        if opt.model == 'ScaleDense':
-            out = model(input, male)
-
-        else:
-            #out = model(input)
-            out,(attn1, attn2, attn3) = model(input,return_attention_weights=True)
+        # if opt.model == 'ScaleDense':
+        #     out = model(input, male)
+        # else:
+        #     #out = model(input)
+        #     out,(attn1, attn2, attn3) = model(input,return_attention_weights=True)
+        out,(attn1, attn2, attn3) = model(input,return_attention_weights=True)
 
 
         # =========== compute loss =========== #
@@ -403,11 +403,12 @@ def validate(valid_loader, model, criterion1,  device):
             target = target.type(torch.FloatTensor).to(device)
 
             # =========== compute output and loss =========== #
-            if opt.model == 'ScaleDense':
-                out = model(input,male)
-            else:
-                #out = model(input)
-                out, (attn1, attn2, attn3) = model(input, return_attention_weights=True)
+            # if opt.model == 'ScaleDense':
+            #     out = model(input,male)
+            # else:
+            #     #out = model(input)
+            #     out, (attn1, attn2, attn3) = model(input, return_attention_weights=True)
+            out, (attn1, attn2, attn3) = model(input, return_attention_weights=True)
 
             # =========== compute loss =========== #
             loss = criterion1(out, target)
