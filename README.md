@@ -26,6 +26,25 @@
 ## Preprocessing
 *"To ensure compatibility and mitigate the potential effects of protocol variability for the different datasets, we applied a standardized preprocessing protocol using FSL 5.10 [37] to the MRI scans. This protocol included several steps: brain extraction [38], bias field correction, nonlinear registration to the MNI standard space, and normalization of voxel values within the brain area by subtracting the mean and dividing by the standard deviation. We also used ComBat harmonization on the datasets to adjust for scanner and site-specific effects while preserving biological variability. After preprocessing, all MRI scans were resized to a voxel dimension of 91 × 109 × 91 with an isotropic spatial resolution of 2 mm."* 
 
+Under the `preprocessing/` directory there are `run_preprocessing.sh` and `cluster_preprocessing.sh`, for single process and multi-process(slurm cluster) preprocessing respectively
+
+```bash
+# Cluster example
+
+# The output is stored in a `preprocessed/` dir and also logs are printed for each job spawned
+FILES_PER_JOB=20 sbatch cluster_preprocessing.sh "../data/IXI_train"
+
+# Single job example
+# `run_preprocessing.sh` applies the complete FSL preprocessing pipeline to MRI images:
+# Usage: ./run_preprocessing.sh <START_INDEX> <NUM_FILES>
+# Default: processes 1 file starting from index 0
+# You can set the IXI_DATASET variable to specify the input directory (defaults to ../data/IXI_test)
+
+cd preprocessing
+IXI_DATASET="../data/IXI_train" ./run_preprocessing.sh 0 5
+
+```
+
 ### 1 FSL preprocessing
 [FSL reference](https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html)
 
