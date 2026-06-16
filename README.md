@@ -1,9 +1,21 @@
-# Tri-Vit implementation
-- [Tri-Vit implementation](#tri-vit-implementation)
-  - [Objectives](#objectives)
+# Tri-Vit Refactor
+A reconstruction of the Tri-Vit ( see [references](#references)) model for brain age estimation.
+The original repo is missing:
+- The environment used
+- The model weights
+- The preprocessing pipeline
+
+Also different models trained and used only in the comparison made in the paper are left in the codebase, resulting in useless libraries and packages import for the actual Tri-Vit model.
+This project objective is:
+1. Reconstruct Tri-ViT preprocessing pipeline
+2. Train Tri-ViT and test it 
+
+## Table of Contents
+- [Tri-Vit Refactor](#tri-vit-refactor)
+  - [Table of Contents](#table-of-contents)
   - [Preprocessing](#preprocessing)
     - [1 FSL preprocessing](#1-fsl-preprocessing)
-      - [Installation](#installation)
+      - [Installation (Apptainer)](#installation-apptainer)
       - [Running (Apptainer)](#running-apptainer)
       - [1.1 Brain Extraction](#11-brain-extraction)
       - [1.2 Bias Field Correction](#12-bias-field-correction)
@@ -18,15 +30,13 @@
     - [2. Inference](#2-inference)
   - [References](#references)
 
-## Objectives
-1. Reconstruct Tri-ViT preprocessing pipeline
-2. Train Tri-ViT and test it 
-3. Understand FreeSurfer and find areas of integration with Tri-ViT 
 
 ## Preprocessing
 *"To ensure compatibility and mitigate the potential effects of protocol variability for the different datasets, we applied a standardized preprocessing protocol using FSL 5.10 [37] to the MRI scans. This protocol included several steps: brain extraction [38], bias field correction, nonlinear registration to the MNI standard space, and normalization of voxel values within the brain area by subtracting the mean and dividing by the standard deviation. We also used ComBat harmonization on the datasets to adjust for scanner and site-specific effects while preserving biological variability. After preprocessing, all MRI scans were resized to a voxel dimension of 91 × 109 × 91 with an isotropic spatial resolution of 2 mm."* 
 
 ### 1 FSL preprocessing
+Running the datasets preprocessing is made through the FSL library. Is possible to run it locally even though I suggest to do it on a HPC system due to its high workload. More infos on the [dedicated section](#installation-apptainer)
+
 [FSL reference](https://fsl.fmrib.ox.ac.uk/fsl/docs/index.html)
 
 
@@ -38,15 +48,19 @@
 | Voxel normalization (z-score)       | `fslmaths`                                   |
 
 
+#### Installation (Apptainer)
 
-#### Installation
-[FSL singularity images](https://singularityhub.github.io/singularityhub-archive/collection/MPIB-singularity-fsl/)
+- [FSL singularity images](https://singularityhub.github.io/singularityhub-archive/collection/MPIB-singularity-fsl/)
+- [Apptainer](https://apptainer.org/docs/user/main/)
+- [Singularity compatibility](https://apptainer.org/docs/user/main/singularity_compatibility.html#singularity-command-symlink)
+
 ```bash
 singularity pull shub://MPIB/singularity-fsl:5.0.10
 ```
 
 #### Running (Apptainer)
 ```bash
+# Running a shell inside the singularity image
 apptainer shell \
 --cleanenv \
 singularity-fsl_5.0.10.sif
@@ -122,14 +136,6 @@ More details about fnirt [here](https://fsl.fmrib.ox.ac.uk/fsl/docs/registration
 
 We can use FNIRT or the newer [MMORF](https://fsl.fmrib.ox.ac.uk/fsl/docs/registration/mmorf.html#installing-mmorf), MMORF is not available in FSL 5.0.10 but is faster and does a more precise registration
 
-TO REMOVE
-```bash
-cp $FSLDIR/etc/flirtsch/T1_2_MNI152_2mm.cnf ./preprocessing && \
-cp $FSLDIR/data/standard/MNI152_T1_2mm_brain_mask.nii.gz ./preprocessing
-```
-
-
-
 #### 1.4 Voxel Normalization
 ```bash
 # Step 1: Calculate global mean and std across all voxels
@@ -155,8 +161,7 @@ This is a dataset harmonization done for MRI scans coming from different machine
 ## Triamese-ViT
 They have used **T1 structural MRI** scans from IXI and ABIDE [(ref)](#references)
 
-I'm removing all the useless models because I'm getting a lot of interferences with the dependencies
-
+I'm removing all the test models used for comparison in the paper.
 
 #### Spearman (differentiable) loss
 >[!Warning]
