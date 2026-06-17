@@ -10,11 +10,10 @@ FreeSurfer/license.txt
 
 training_loss/
 model/
+
 # Files extensions
 *-dev.sh
 *.sif
 *.xls
 *.log
 
-# Single files
-# run_setup.sh

@@ -14,7 +14,7 @@ This project objective is:
 - [Tri-Vit Refactor](#tri-vit-refactor)
   - [Table of Contents](#table-of-contents)
   - [1. Preprocessing (FSL)](#1-preprocessing-fsl)
-    - [Dataset split setup](#dataset-split-setup)
+    - [Dataset download \& split setup](#dataset-download--split-setup)
     - [Installation (Apptainer)](#installation-apptainer)
     - [Running (Apptainer)](#running-apptainer)
     - [1.1 Brain Extraction](#11-brain-extraction)
@@ -43,7 +43,13 @@ This project objective is:
 
 Under the `preprocessing/` directory there are `run_preprocessing.sh` and `cluster_preprocessing.sh`, for single process and multi-process(slurm cluster) preprocessing respectively
 
-### Dataset split setup 
+### Dataset download & split setup 
+The IXI dataset can be downloaded at: [link](#t1-ixi-dataset)
+The ABIDE-II dataset can be downloaded at: [link](#abide-ii-dataset)
+
+> [!Warning]
+> **Only the IXI dataset** have been used for testing and training the model, ABIDE-II have been used in the paper but differs in how samples and metadata is given and structured respectively. See [future works](#3-future-works) and the ABIDE [reference](#triamese-vit) for more details
+
 The samples tipically are not divided into the (train,eval,test) datasets, you can run:
 ```bash
 python3 split_scripts.py \
@@ -256,7 +262,7 @@ python3 Training.py \
 ```
 
 ## 3. Future Works
-- ABIDE-II integration and testing
+- ABIDE-II integration and testing, reproducing the paper model and generalization capabilities on predicting ASD.
 - [ComBat harmonization](https://github.com/Jfortin1/ComBatHarmonization) between datasets (see [Tri-ViT](#triamese-vit))
 - Attention map and occlusion analysis code refactor from the original codebase (respectively `mask.py` and `Attention_map_new_try.py`) 
 
