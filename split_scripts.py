@@ -4,10 +4,10 @@ import random
 import argparse
 from pathlib import Path
 
-source_dir = "../IXI"
 output_dir = "./data/"
 
 def split_dataset(
+    source_dir,
     train_ratio=0.7,
     val_ratio=0.15,
     test_ratio=0.15,
@@ -88,10 +88,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Split dataset into 70/15/15.")
     parser.add_argument("--move", action="store_true", help="Move files instead of copying")
     parser.add_argument("--seed", type=int, default=0, help="Random seed")
+    parser.add_argument("--source-dir", type=str, required=True, help="Source directory containing data files")
 
     args = parser.parse_args()
 
     split_dataset(
+        source_dir=args.source_dir,
         train_ratio=0.7,
         val_ratio=0.15,
         test_ratio=0.15,

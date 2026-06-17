@@ -57,7 +57,7 @@ for ((i=START_INDEX; i<END_INDEX && i<TOTAL_FILES; i++)); do
     echo "Running fast"
     fast -B -o "$FAST_OUT" "${BET_OUT}.nii.gz"
 
-    echo "Running fnirt"
+    echo "Running fnirt" # From the raw MRI scans to 1mm MNI space(not 2!!)
     fnirt \
         --in="${FAST_OUT}_restore.nii.gz" \
         --config=my_fnirt.cnf \

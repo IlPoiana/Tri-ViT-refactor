@@ -75,9 +75,6 @@ def main(res):
     valid_data = IMG_Folder( opt.excel_path
                             ,opt.valid_folder)
     
-    #TO REMOVE
-    # print("train_data")
-    # print(train_data[0][0], train_data[0][1], train_data[0][2], train_data[0][3])
     print(train_data[0][0].shape)
     #-----------
 
